@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -10,9 +10,10 @@ import { useLayerSource } from '@/hooks/map';
 import ItemHeader from '@/components/datasets-list/datasets-item-header';
 import { Button } from '@/components/ui/button';
 
-export const DatasetsItem = ({ layer_id }: { layer_id: string }) => {
+const DatasetsItem: FC<{ layer_id: string }> = ({ layer_id }) => {
   const { data } = useLayerSource({ layer_id });
   const { title, description, download_url } = data;
+
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -20,7 +21,7 @@ export const DatasetsItem = ({ layer_id }: { layer_id: string }) => {
   const layerParams = useMemo<string[]>(
     () => layersId?.substring(1, layersId?.length - 1).split(','),
     [layersId]
-  ) satisfies string[];
+  );
   const isActive = layerParams?.includes(layer_id);
   const handleClick = useCallback(() => {
     isActive ? router.replace(`${pathname}`) : router.replace(`${pathname}/?layers=[${layer_id}]`);

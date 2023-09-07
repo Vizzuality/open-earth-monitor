@@ -4,7 +4,7 @@ import { LayerTypes } from '@/types/datasets';
 
 import DatasetsItem from './datasets-item';
 
-export const DatasetsList = ({ data }: { data: LayerTypes[] }) => (
+const DatasetsList = ({ data }: { data: LayerTypes[] }) => (
   <div className="pl-4 text-secondary-200">
     <ul>
       {data.map(({ layer_id }) => (

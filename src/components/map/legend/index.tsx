@@ -11,7 +11,7 @@ import type { LegendProps } from './types';
 
 type LegendPropsWithChildren = PropsWithChildren<LegendProps>;
 
-export const Legend: FC<LegendPropsWithChildren> = ({
+const Legend: FC<LegendPropsWithChildren> = ({
   children,
   className = '',
   maxHeight,

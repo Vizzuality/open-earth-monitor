@@ -1,17 +1,14 @@
+import { FC } from 'react';
+
 import { MonitorTypes } from '@/types/datasets';
 
 import DatasetsList from '@/components/datasets-list';
 
-export const MonitorDisplay = ({ monitor }: { monitor: MonitorTypes }) => {
-  const { title, description, geostories } = monitor;
+const MonitorDisplay: FC<{ monitor: MonitorTypes }> = ({ monitor }) => {
+  const { geostories } = monitor;
 
   return (
     <div>
-      <div className="space-y-2 bg-secondary-200 p-7.5 text-brand-600">
-        <span className="inter text-xs">MONITOR</span>
-        <h2 className="text-5xl">{title}</h2>
-        <p>{description}</p>
-      </div>
       {geostories.map(({ id, layers }) => (
         <DatasetsList key={id} data={layers} />
       ))}

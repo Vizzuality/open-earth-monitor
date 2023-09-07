@@ -7,7 +7,7 @@ export type LayerTypes = Readonly<{
   gs_name: string;
   gs_dimension: string;
   range: string;
-  author: string;
+  author: string | null;
   coverage: string;
   description: string;
   download_url: string;
@@ -29,7 +29,7 @@ export type LayerTypes = Readonly<{
 }>;
 
 export type GeoStoryTypes = Readonly<{
-  author: string;
+  author: string | null;
   date_created: string;
   description: string;
   id: string;
@@ -39,7 +39,7 @@ export type GeoStoryTypes = Readonly<{
 }>;
 
 export type MonitorTypes = Readonly<{
-  author: string;
+  author: string | null;
   coverage: string;
   date_created: string;
   description: string;

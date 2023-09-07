@@ -13,12 +13,14 @@ export function useMonitor(params: UseParams, queryOptions?: UseQueryOptions<Mon
     API.request({
       method: 'GET',
       url: '/monitors',
-      params: {
-        ...params,
-      },
+      params,
       ...queryOptions,
-    }).then((response: AxiosResponse<{ monitors: MonitorTypes[] }>) => response.data.monitors[0]);
+    }).then((response: AxiosResponse<{ monitors: MonitorTypes }>) => response.data.monitors[0]);
   return useQuery(['monitors', params], fetchMonitors, {
+    placeholderData: {
+      title: '',
+      description: '',
+    },
     select: (data) => data,
     ...queryOptions,
   });

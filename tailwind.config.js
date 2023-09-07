@@ -37,6 +37,7 @@ module.exports = {
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
+          50: 'hsla(60, 16%, 76%, 0.5)',
           200: 'hsl(60, 100%, 95%)',
           foreground: 'hsl(var(--secondary-foreground))',
         },
