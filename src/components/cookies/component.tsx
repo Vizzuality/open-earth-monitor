@@ -2,11 +2,13 @@ import Link from 'next/link';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { Button } from '@/components/ui/button';
-
 import type { CookiesProps } from './types';
 
-export const Cookies: React.FC<CookiesProps> = ({ open, onAccept, onReject }: CookiesProps) => {
+export const Cookies: React.FC<CookiesProps> = ({
+  open,
+}: // onAccept,
+// onReject
+CookiesProps) => {
   return (
     <AnimatePresence>
       {open && (
@@ -41,12 +43,6 @@ export const Cookies: React.FC<CookiesProps> = ({ open, onAccept, onReject }: Co
                 </Link>{' '}
                 to know more.
               </p>
-              <div className="flex justify-end gap-3">
-                <Button variant="secondary" onClick={onReject}>
-                  Deny
-                </Button>
-                <Button onClick={onAccept}>Accept</Button>
-              </div>
             </div>
           </motion.div>
         </div>

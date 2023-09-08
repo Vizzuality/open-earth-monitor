@@ -7,16 +7,12 @@ import { Layer } from 'react-map-gl';
 
 import { useDebounce } from 'usehooks-ts';
 
-// Controls
-import Map from 'components/map';
-import Controls from 'components/map/controls';
-import FitBoundsControl from 'components/map/controls/fit-bounds';
-import ZoomControl from 'components/map/controls/zoom';
-import { Bbox } from 'components/map/types';
+import Map from '@/components/map';
+import { Bbox } from '@/components/map/types';
 
 // Map
 import LayerManager from './layer-manager';
-const DEFAULT_BBOX: Bbox = [7.295523, 41.102768, 15.425406, 44.885675];
+const DEFAULT_BBOX: Bbox = [-173.488154, -60.809359, 164.011846, 67.836775];
 const MAX_ZOOM = 20;
 const DEFAULT_BOUNDS = {
   bbox: DEFAULT_BBOX,
@@ -46,7 +42,7 @@ const MapImplementation = () => {
 
   return (
     <MapProvider>
-      <div className="relative h-[400px] w-full">
+      <div className="absolute bottom-0 left-0 right-0 top-0">
         <Map
           maxZoom={MAX_ZOOM}
           bounds={DEFAULT_BOUNDS}
@@ -69,10 +65,6 @@ const MapImplementation = () => {
                 }}
               />
               <LayerManager layers={['example']} />
-              <Controls>
-                <ZoomControl />
-                <FitBoundsControl bounds={DEFAULT_BOUNDS} />
-              </Controls>
             </>
           )}
         </Map>

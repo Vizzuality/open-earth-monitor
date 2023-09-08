@@ -12,6 +12,8 @@ Unreleased
 
 ### Added
 - Satoshi Font, main navigation, and test for navigation functionality [OEMC-18](https://vizzuality.atlassian.net/browse/OEMC-18)
+- Map set up and layers display [OEMC-23](https://vizzuality.atlassian.net/jira/software/c/projects/OEMC/boards/95?selectedIssue=OEMC-23)
+
 
 
 ### Changed
