@@ -13,10 +13,12 @@ import Controls from '@/components/map/controls';
 import BookmarkControl from '@/components/map/controls/bookmark';
 import FitBoundsControl from '@/components/map/controls/fit-bounds';
 import ZoomControl from '@/components/map/controls/zoom';
+import Legend from '@/components/map/legend';
 import { Bbox } from '@/components/map/types';
 
 // Map
 import LayerManager from './layer-manager';
+
 const DEFAULT_BBOX: Bbox = [-173.488154, -60.809359, 164.011846, 67.836775];
 const MAX_ZOOM = 20;
 const DEFAULT_BOUNDS = {
@@ -47,7 +49,7 @@ const MapImplementation = () => {
 
   return (
     <MapProvider>
-      <div className="absolute bottom-0 left-0 right-0 top-0">
+      <div className="absolute bottom-0 left-0 top-0 w-screen">
         <Map
           maxZoom={MAX_ZOOM}
           bounds={DEFAULT_BOUNDS}
@@ -69,12 +71,13 @@ const MapImplementation = () => {
                   'background-opacity': 0,
                 }}
               />
-              <LayerManager layers={['example']} />
+              <LayerManager layers={['raster']} />
               <Controls>
                 <ZoomControl />
                 <FitBoundsControl bounds={DEFAULT_BOUNDS} />
                 {/* <BookmarkControl bounds={DEFAULT_BOUNDS} /> */}
               </Controls>
+              <Legend />
             </>
           )}
         </Map>

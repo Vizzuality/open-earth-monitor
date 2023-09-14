@@ -1,10 +1,8 @@
 import { FC, useCallback, MouseEvent } from 'react';
 
+import { StarIcon } from '@heroicons/react/24/solid';
 import cx from 'clsx';
 import { useLocalStorage } from 'usehooks-ts';
-
-import Icon from 'components/icon';
-import BOOKMARK_SVG from 'svgs/map/bookmark.svg?sprite';
 
 import type { BookmarkControlProps } from './types';
 
@@ -24,7 +22,7 @@ export const BookmarkControl: FC<BookmarkControlProps> = ({
     <button
       aria-label="Fit to bounds"
       className={cx({
-        'rounded-sm bg-brand-600 p-1 text-secondary-200 disabled:cursor-default disabled:opacity-50':
+        'rounded-sm bg-brand-500 p-1 text-secondary-500 disabled:cursor-default disabled:opacity-50':
           true,
         'hover:bg-gray-700 active:bg-gray-600': !!bounds,
         [className]: !!className,
@@ -33,7 +31,7 @@ export const BookmarkControl: FC<BookmarkControlProps> = ({
       disabled={!bounds}
       onClick={handleBookmark}
     >
-      <Icon icon={BOOKMARK_SVG} />
+      <StarIcon />
     </button>
   );
 };
