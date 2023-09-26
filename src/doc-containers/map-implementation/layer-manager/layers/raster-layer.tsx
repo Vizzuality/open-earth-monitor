@@ -1,5 +1,4 @@
 'use client';
-import { useMemo } from 'react';
 
 import { Source, Layer } from 'react-map-gl';
 
@@ -21,36 +20,35 @@ export const RasterLayerComponent = ({ beforeId }: LayerComponentProps) => {
       enabled: !!layerId,
     }
   );
-
   const { gs_base_wms, gs_name, range } = data ?? {};
-  const tiles = useMemo(
-    () => [
-      `${gs_base_wms}?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=${gs_name}&DIM_DATE=${range}&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&STYLES=&BBOX={bbox-epsg-3857}`,
-    ],
-    [gs_base_wms, gs_name, range]
-  );
-  const LAYER: RasterLayer & { key: string } = {
+
+  const tiles = [
+    `${gs_base_wms}?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=${gs_name}&DIM_DATE=${range}&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&STYLES=&BBOX={bbox-epsg-3857}`,
+  ];
+  const LAYER: RasterLayer = {
     id: 'raster-layer',
-    key: range ? `${layerId}-${range}` : layerId,
     type: 'raster',
     paint: {
       'raster-opacity': layerOpacity,
     },
   };
-  const SOURCE: RasterSource & GeoJSONSourceOptions = useMemo(
-    () => ({
-      id: 'layer-source',
-      key: layerId,
-      type: 'raster',
-      tiles,
-      minzoom: 0,
-      maxzoom: 12,
-    }),
-    [layerId, tiles]
-  );
+  const SOURCE: RasterSource & GeoJSONSourceOptions & { key: string } = {
+    id: 'layer-source',
+    key: `${range}-${layerId}`,
+    type: 'raster',
+    tiles,
+    minzoom: 0,
+    maxzoom: 12,
+  };
 
-  return SOURCE ? (
-    <Source {...SOURCE}>{isFetched && <Layer {...LAYER} beforeId={beforeId} />}</Source>
-  ) : null;
+  return (
+    SOURCE && (
+      <Source key={layerId} {...SOURCE}>
+        {isFetched && (
+          <Layer key={range ? `${layerId}-${range}` : layerId} {...LAYER} beforeId={beforeId} />
+        )}
+      </Source>
+    )
+  );
 };
 export default RasterLayerComponent;

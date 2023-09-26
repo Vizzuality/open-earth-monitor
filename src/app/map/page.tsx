@@ -1,11 +1,16 @@
+import { FC } from 'react';
+
 import type { Metadata } from 'next';
 
-import MonitorsDirectory from '@/components/monitors-directory';
+import MonitorsDirectoryDialog from '@/components/monitors/dialog';
+
 export const metadata: Metadata = {
-  title: 'Map - Open-Earth-Monitor Cyberinfrastructure',
+  title: 'Map - Open Earth Monitor Cyberinfrastructure',
   description: '...',
 };
 
-const MapPage: React.FC = () => <MonitorsDirectory />;
+const MapLayout: FC = () => (
+  <MonitorsDirectoryDialog isOpen={true} preventClose={true} showTriggerElement={false} />
+);
 
-export default MapPage;
+export default MapLayout;

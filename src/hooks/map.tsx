@@ -13,7 +13,7 @@ export function useLayers(queryOptions?: UseQueryOptions<LayerTypes[], Error>) {
       ...queryOptions,
     }).then((response: AxiosResponse<LayerTypes[]>) => response.data);
   return useQuery(['layer'], fetchLayer, {
-    select: (data) => data,
+    select: (data) => data.map((layer) => ({ ...layer, range: layer.range[0] })),
     ...queryOptions,
   });
 }
@@ -33,7 +33,7 @@ export function useLayerSource(
   return useQuery(['layer', params], fetchLayer, {
     select: (data) => ({
       ...data,
-      range: data?.range?.split(',')[0],
+      range: data?.range?.[0] || null,
     }),
     ...queryOptions,
   });
