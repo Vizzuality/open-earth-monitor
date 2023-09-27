@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -14,23 +14,28 @@ export const LayerVisibility = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { layerId, layerOpacity } = useURLayerParams();
+  const { layerId, layerOpacity, layerYear } = useURLayerParams();
 
   const onToggleLayerVisibility = useCallback(() => {
     const encodedLayers = decodeURIComponent(
       JSON.stringify({
         id: layerId,
         opacity: isLayerVisible ? 0 : layerOpacity > 0 ? layerOpacity : 1,
+        ...(layerYear && { layerYear }),
       })
     );
-    setLayerVisibility(!isLayerVisible);
     const url = `${pathname}/?layers=[${encodedLayers}]`;
     return router.replace(url);
-  }, [isLayerVisible, layerId, pathname, router, layerOpacity]);
+  }, [isLayerVisible, layerId, pathname, router, layerOpacity, layerYear]);
+
+  useEffect(() => {
+    setLayerVisibility(layerOpacity > 0);
+  }, [layerOpacity]);
 
   return (
     <button
       data-testid="layer-visibility"
+      data-active={isLayerVisible}
       type="button"
       className="flex items-center justify-center"
       onClick={onToggleLayerVisibility}
