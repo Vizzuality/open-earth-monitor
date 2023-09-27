@@ -10,10 +10,17 @@ import { RiTwitterXLine, RiLinkedinFill } from 'react-icons/ri';
 
 import { cn } from '@/lib/classnames';
 
-import { CONTROL_BUTTON_STYLES, CONTROL_ICON_STYLES } from '@/components/map/controls/constants';
+import { CONTROL_BUTTON_STYLES } from '@/components/map/controls/constants';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-export const ShareControl: FC = () => {
+import type { BookmarkControlProps } from './types';
+
+const timeResetCopyState = 1000;
+
+export const ShareControl: FC<BookmarkControlProps> = ({
+  bounds,
+  className,
+}: BookmarkControlProps) => {
   const pathname = usePathname();
   const params = useSearchParams();
   const urlCopy = useMemo(
@@ -33,7 +40,7 @@ export const ShareControl: FC = () => {
       // Reset the "copied" state after 1 second
       setTimeout(() => {
         setURLCopyState(false);
-      }, 2000);
+      }, timeResetCopyState);
     } catch (error) {
       // Handle clipboard copy error
       console.error('Error copying to clipboard:', error);
@@ -41,26 +48,48 @@ export const ShareControl: FC = () => {
   };
   return (
     <Popover>
-      <PopoverTrigger className={CONTROL_BUTTON_STYLES.default}>
-        <HiOutlineShare className={CONTROL_ICON_STYLES.default} />
+      <PopoverTrigger data-testid="share-tool-trigger">
+        <HiOutlineShare
+          className={cn({
+            [CONTROL_BUTTON_STYLES.default]: true,
+            'h-8 w-8  stroke-secondary-500 stroke-[1.5px] p-1': true,
+            'hover:bg-gray-700 active:bg-gray-600': !!bounds,
+            [className]: !!className,
+          })}
+        />
       </PopoverTrigger>
       <PopoverContent
-        sideOffset={-34}
-        alignOffset={34}
+        sideOffset={-32}
+        alignOffset={32}
         align="start"
-        className="ml-1.5 flex h-[34px] w-fit items-center border border-brand-50 p-0.5"
+        className={cn({
+          'top-0 ml-1 flex w-fit items-center space-x-4 border border-brand-50 px-1 py-[3px]': true,
+          'py-0': urlCopyState,
+        })}
       >
-        {urlCopyState && <p className="px-2 py-1.5 text-xs">Link copied to clipboard</p>}
+        {urlCopyState && (
+          <p data-testid="copy-link-success" className="px-2 py-1.5 text-xs">
+            Link copied to clipboard
+          </p>
+        )}
         {!urlCopyState && (
           <>
             <button
               type="button"
+              data-testid="copy-url-link"
               aria-label="copy url link"
-              className={cn(CONTROL_BUTTON_STYLES.default, 'flex h-[28px] w-auto space-x-2 px-2')}
+              className={cn({
+                'flex items-center space-x-2 text-secondary-500 disabled:cursor-default disabled:opacity-50':
+                  true,
+                'hover:bg-gray-700 active:bg-gray-600': !!bounds,
+                [className]: !!className,
+              })}
               onClick={() => void handleCopy()}
             >
-              <PiLinkSimpleBold className={CONTROL_ICON_STYLES.default} />
-              <span className="text-xs">Copy URL link</span>
+              <PiLinkSimpleBold className="text-secondary-200 h-5 w-5" />
+              <p data-testid="copy-message" className="py-1 text-xs">
+                Copy URL link
+              </p>
             </button>
             <div className="flex items-center space-x-2">
               <TwitterShareButton
@@ -68,10 +97,15 @@ export const ShareControl: FC = () => {
                 // TODO: update title
                 title="Open Earth Monitor Cyberinfrastructure"
                 aria-label="share twitter"
+                data-testid="share-twitter-button"
               >
-                <div className={cn(CONTROL_BUTTON_STYLES.default, 'h-[28px] w-[28px]')}>
-                  <RiTwitterXLine className={CONTROL_ICON_STYLES.default} />
-                </div>
+                <RiTwitterXLine
+                  className={cn({
+                    'h-4 w-4 text-secondary-500 disabled:cursor-default disabled:opacity-50': true,
+                    'hover:bg-gray-700 active:bg-gray-600': !!bounds,
+                    [className]: !!className,
+                  })}
+                />
               </TwitterShareButton>
 
               <LinkedinShareButton
@@ -80,10 +114,15 @@ export const ShareControl: FC = () => {
                 title="Open Earth Monitor Cyberinfrastructure"
                 className="align-baseline"
                 aria-label="share in linkedin"
+                data-testid="share-linkedin-button"
               >
-                <div className={cn(CONTROL_BUTTON_STYLES.default, 'h-[28px] w-[28px]')}>
-                  <RiLinkedinFill className={CONTROL_ICON_STYLES.default} />
-                </div>
+                <RiLinkedinFill
+                  className={cn({
+                    'h-5 w-6 text-secondary-500 disabled:cursor-default disabled:opacity-50': true,
+                    'hover:bg-gray-700 active:bg-gray-600': !!bounds,
+                    [className]: !!className,
+                  })}
+                />
               </LinkedinShareButton>
             </div>
           </>
