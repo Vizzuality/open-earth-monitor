@@ -11,11 +11,14 @@ import { RView } from 'rlayers/RMap';
 import { useLayerParsedSource } from '@/hooks/layers';
 import { useURLayerParams } from '@/hooks/url-params';
 
+import ShareControl from '../share';
+
 import { DEFAULT_VIEWPORT } from './constants';
 // map controls
 import Controls from './controls';
 import BookmarkControl from './controls/bookmark';
-import ShareControl from './controls/share';
+import ZoomControl from './controls/zoom';
+import LayerManager from './layer-manager';
 import Legend from './legend';
 import type { CustomMapProps } from './types';
 
