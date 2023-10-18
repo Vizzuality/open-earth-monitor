@@ -25,6 +25,7 @@ test.describe('geostories tab', () => {
     // check geostory tab is active and url updated
     await page.waitForURL(`**/map/${monitorsIds[0]}/geostories`, { waitUntil: 'load' });
     await expect(geostoriesTabLink).toHaveAttribute('href', `/map/${monitorsIds[0]}/geostories`);
+
     await expect(geostoriesTabLink).toHaveClass(/border-t-secondary-500/); // active tab
 
     // check geostories list is visible
