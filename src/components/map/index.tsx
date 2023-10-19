@@ -17,8 +17,6 @@ import { DEFAULT_VIEWPORT } from './constants';
 // map controls
 import Controls from './controls';
 import BookmarkControl from './controls/bookmark';
-import ZoomControl from './controls/zoom';
-import LayerManager from './layer-manager';
 import Legend from './legend';
 import type { CustomMapProps } from './types';
 

@@ -10,6 +10,6 @@ test('gets level 1 Heading', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Discover and Empower with Monitoring Solutions.'
+    'Discover and empower with monitoring solutions.'
   );
 });
