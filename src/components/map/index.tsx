@@ -152,7 +152,7 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
             REQUEST: 'GetMap',
             TRANSPARENT: true,
             LAYERS: gs_name,
-            DIM_DATE: '20130101_20131231', // change this date to the one you want to compare
+            DIM_DATE: range[range.length - 1].value, // change this date to the one you want to compare
             CRS: 'EPSG:3857',
             BBOX: 'bbox-epsg-3857',
           }}

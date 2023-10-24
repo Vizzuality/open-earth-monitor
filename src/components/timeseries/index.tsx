@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-const TIMEOUT_STEP_DURATION = 2500;
+const TIMEOUT_STEP_DURATION = 2000;
 
 const TimeSeries: FC<{
   layerId: LayerParsed['layer_id'];

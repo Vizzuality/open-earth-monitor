@@ -17,14 +17,17 @@ const SwipeControl = () => {
       swipeControl = new Swipe({ layers: [layers[1]], rightLayers: [layers[2]] }) as Control;
       map.addControl(swipeControl);
     }
+  }, [layers, map]);
 
+  useEffect(() => {
     return () => {
       if (swipeControl) {
         map.removeControl(swipeControl);
         swipeControl = null;
       }
     };
-  }, [layers, map]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return null;
 };
