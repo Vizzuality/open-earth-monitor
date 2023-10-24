@@ -140,23 +140,25 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
           }}
         />
 
-        <RLayerWMS
-          properties={{ label: gs_name, opacity: layerOpacity, date, range }}
-          url={gs_base_wms}
-          params={{
-            FORMAT: 'image/png',
-            WIDTH: 256,
-            HEIGHT: 256,
-            SERVICE: 'WMS',
-            VERSION: '1.3.0',
-            REQUEST: 'GetMap',
-            TRANSPARENT: true,
-            LAYERS: gs_name,
-            DIM_DATE: range[range.length - 1].value, // change this date to the one you want to compare
-            CRS: 'EPSG:3857',
-            BBOX: 'bbox-epsg-3857',
-          }}
-        />
+        {range?.length > 0 && (
+          <RLayerWMS
+            properties={{ label: gs_name, opacity: layerOpacity, date, range }}
+            url={gs_base_wms}
+            params={{
+              FORMAT: 'image/png',
+              WIDTH: 256,
+              HEIGHT: 256,
+              SERVICE: 'WMS',
+              VERSION: '1.3.0',
+              REQUEST: 'GetMap',
+              TRANSPARENT: true,
+              LAYERS: gs_name,
+              DIM_DATE: range[range.length - 1].value, // change this date to the one you want to compare
+              CRS: 'EPSG:3857',
+              BBOX: 'bbox-epsg-3857',
+            }}
+          />
+        )}
 
         <Controls className="absolute bottom-3 left-[554px] z-50">
           <RControl.RZoom />

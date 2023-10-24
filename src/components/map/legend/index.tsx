@@ -13,7 +13,9 @@ const LEGEND_BUTTON_STYLES =
 export const Legend = () => {
   const { layerId } = useURLayerParams();
   const { data } = useLayerParsedSource({ layer_id: layerId }, { enabled: !!layerId });
-  const { title } = data ?? {};
+  const { title, range } = data ?? {};
+
+  console.log('range', range);
 
   return (
     <div
@@ -29,7 +31,7 @@ export const Legend = () => {
           >
             Layer
           </button>
-          <button className={LEGEND_BUTTON_STYLES} disabled>
+          <button className={LEGEND_BUTTON_STYLES} disabled={!range || range.length === 0}>
             Compare
           </button>
         </div>
