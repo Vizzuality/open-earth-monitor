@@ -51,14 +51,14 @@ export default defineConfig({
   projects: [
     {
       name: 'Google Chrome',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+      use: { ...devices['Desktop Chrome'], channel: 'chrome', permissions: ['clipboard-read'] },
     },
     ...(process.env.CI
       ? []
       : [
           {
             name: 'Mozilla Firefox',
-            use: { ...devices['Desktop Firefox'] },
+            use: { ...devices['Desktop Firefox'], permissions: ['clipboard-read'] },
           },
         ]),
   ],
