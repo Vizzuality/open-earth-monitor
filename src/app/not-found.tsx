@@ -7,7 +7,7 @@ export default function Custom404() {
         <h1 data-testid="404-error" className="text-9xl font-black">
           404
         </h1>
-        <p className="font-inter text-4xl font-bold">Page not found</p>
+        <p className="font-inter text-4xl font-bold">Page not found.</p>
         <p>It looks like the link is broken or the page has been removed.</p>
         <Link
           href="/"
