@@ -104,6 +104,17 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, nextSearchParams, router, currentPathname]);
 
+  /**
+   * Get date for the compare layer
+   */
+
+  const compareLayerParams = JSON.parse(searchParams.get('compareLayers')) as {
+    id: string;
+    opacity: number;
+    date: string;
+  }[];
+  const compareDate = compareLayerParams?.[0]?.date satisfies string;
+
   return (
     <>
       <RMap
@@ -140,7 +151,7 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
           }}
         />
 
-        {range?.length > 0 && (
+        {range?.length > 0 && compareDate && (
           <RLayerWMS
             properties={{ label: gs_name, opacity: layerOpacity, date, range }}
             url={gs_base_wms}
@@ -153,7 +164,7 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
               REQUEST: 'GetMap',
               TRANSPARENT: true,
               LAYERS: gs_name,
-              DIM_DATE: range[range.length - 1].value, // change this date to the one you want to compare
+              DIM_DATE: compareDate,
               CRS: 'EPSG:3857',
               BBOX: 'bbox-epsg-3857',
             }}

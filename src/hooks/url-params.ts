@@ -8,6 +8,8 @@ export function useURLayerParams() {
   const params = useSearchParams();
   const layerParams = params.get('layers');
 
+  console.log(layerParams, 'layer params');
+
   const layersParamsParsed = useMemo<null | LayerSearchParams[]>(() => {
     if (layerParams === null) return null;
     else return JSON.parse(layerParams) as LayerSearchParams[];
