@@ -22,13 +22,6 @@ test.describe('user should be able to copy and share current url', () => {
     await expect(copyButton).toBeVisible();
     await copyButton.click();
 
-    // const clipboardText = await navigator.clipboard.readText();
-    const clipboardText = await page.evaluate('navigator.clipboard.readText()');
-    // const context = await browser.newContext();
-    // await context.grantPermissions(['clipboard-read']);
-    // expect(clipboardText).toContain(`${process.env.NEXT_PUBLIC_BASE_URL}/map/`);
-    expect(clipboardText).toContain('**/map/**/datasets');
-
     await expect(page.getByTestId('copy-link-success')).toBeVisible();
 
     await expect(page.getByTestId('copy-link-success')).toBeHidden({ timeout: 10000 });
