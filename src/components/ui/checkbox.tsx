@@ -3,13 +3,14 @@
 import { forwardRef, ElementRef, ComponentPropsWithoutRef } from 'react';
 
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
+import { Circle } from 'lucide-react';
 
 import { cn } from 'lib/classnames';
 
 const Checkbox = forwardRef<
   ElementRef<typeof CheckboxPrimitive.Root>,
   ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
->(({ className, children, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn({
@@ -19,7 +20,9 @@ const Checkbox = forwardRef<
     })}
     {...props}
   >
-    {children}
+    <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
+      <Circle className="m-auto h-2 w-2 items-center self-center fill-current align-middle" />
+    </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
 ));
 

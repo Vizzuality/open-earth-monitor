@@ -10,13 +10,15 @@ export const metadata: Metadata = {
   description: '...',
 };
 
-const Hub: NextPage = () => (
-  <div className="text-secondary-500">
-    <Hero />
-    <LandingDatasets />
-    <Prefooter />
-    <Footer />
-  </div>
-);
+const Hub: NextPage = () => {
+  return (
+    <>
+      <Hero />
+      <LandingDatasets />
+      <Prefooter />
+      <Footer />
+    </>
+  );
+};
 
 export default Hub;
