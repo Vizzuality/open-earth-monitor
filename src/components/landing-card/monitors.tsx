@@ -42,10 +42,7 @@ const Card: FC<Partial<Monitor> & { color?: string }> = ({
       </h2>
     </div>
 
-    <p data-testid={`card-description-${id}`}>
-      Today, the European Commission together with the European Environment Agency (EEA), are
-      publishing a data tool.
-    </p>
+    {description && <p data-testid={`card-description-${id}`}>{description}</p>}
 
     <Dialog>
       <DialogOverlay className="bg-brand-500 bg-opacity-50" />

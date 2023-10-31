@@ -61,7 +61,7 @@ const LandingDatasets = () => {
   return (
     <div className="w-full">
       <div className="m-auto max-w-[1200px]  py-10">
-        <div className="flex h-14">
+        <div className="mb-10 flex h-14">
           <Search
             placeholder="Search by name, type of dataset..."
             value={searchValue}
@@ -73,7 +73,7 @@ const LandingDatasets = () => {
               className="flex h-full min-w-[258px] items-center border-[0.5px] border-l-0 border-secondary-900 font-inter"
               onClick={() => setDropdownVisibility(!dropdownVisibility)}
             >
-              <p>
+              <p className="w-full">
                 {THEMES.length === activeThemes.length && 'All categories selected'}
                 {!THEMES.length && 'No categories selected'}
                 {activeThemes.length === 1 && activeThemes[0]}
@@ -154,10 +154,6 @@ const LandingDatasets = () => {
                 All
               </Label>
             </div>
-            <div className="flex items-center space-x-2" data-testid="all-button">
-              <RadioGroupItem value="all" id="all" />
-              <Label htmlFor="all">All</Label>
-            </div>
           </RadioGroup>
         </div>
         {!!data?.length && (
@@ -175,7 +171,7 @@ const LandingDatasets = () => {
               data-testid="datasets-list"
             >
               {data.map(({ id, ...d }) => (
-                <li key={id} className="mb-6" data-testid="datasets-card">
+                <li key={id} data-testid="datasets-card">
                   <Card id={id} {...d} />
                 </li>
               ))}

@@ -23,7 +23,7 @@ const Card: FC<Partial<Geostory> & { color?: string; headColor?: string }> = ({
     style={{ backgroundColor: color }}
     data-testid={`card-${id}`}
   >
-    <div className="space-y-4 px-10 py-6" style={{ backgroundColor: headColor }}>
+    <div className="space-y-4 px-8 py-6" style={{ backgroundColor: headColor }}>
       <div>
         <div data-testid={`card-type-${id}`} className={TAG_STYLE}>
           <span>geostory</span>

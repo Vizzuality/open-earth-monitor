@@ -852,7 +852,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.37.1":
+"@playwright/test@npm:1.37.1":
   version: 1.37.1
   resolution: "@playwright/test@npm:1.37.1"
   dependencies:
@@ -6459,7 +6459,7 @@ __metadata:
     "@dnd-kit/modifiers": 6.0.1
     "@dnd-kit/sortable": 7.0.2
     "@egjs/react-flicking": 4.10.9
-    "@playwright/test": ^1.37.1
+    "@playwright/test": 1.37.1
     "@radix-ui/react-checkbox": 1.0.4
     "@radix-ui/react-dialog": 1.0.4
     "@radix-ui/react-dropdown-menu": ^2.0.6
@@ -6510,7 +6510,6 @@ __metadata:
     next: 13.5.4
     ol: 8.1.0
     ol-ext: ^4.0.11
-    playwright: 1.39.0
     postcss: 8.4.21
     prettier: ^2.8.8
     prettier-plugin-tailwindcss: ^0.3.0
@@ -6737,30 +6736,6 @@ __metadata:
   bin:
     playwright-core: cli.js
   checksum: 69f818da2230057584140d5b3af7778a4f4a822b5b18d133abfc5d259128becb943c343a2ddf6b0635277a69f28983e83e2bc3fce23595ececb1e410475b6368
-  languageName: node
-  linkType: hard
-
-"playwright-core@npm:1.39.0":
-  version: 1.39.0
-  resolution: "playwright-core@npm:1.39.0"
-  bin:
-    playwright-core: cli.js
-  checksum: 556e78dee4f9890facf2af8249972e0d6e01a5ae98737b0f6b0166c660a95ffee4cb79350335b1ef96430a0ef01d3669daae9099fa46c8d403d11c623988238b
-  languageName: node
-  linkType: hard
-
-"playwright@npm:1.39.0":
-  version: 1.39.0
-  resolution: "playwright@npm:1.39.0"
-  dependencies:
-    fsevents: 2.3.2
-    playwright-core: 1.39.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    playwright: cli.js
-  checksum: 96d8ca5aa25465c1c5d554d0d6071981d55e22477800ff8f5d47a53ca75193d60ece2df538a01b7165b3277dd5493c67603a5acda713029df7fbd95ce2417bc9
   languageName: node
   linkType: hard
 
@@ -7541,7 +7516,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-shadcn-ui@latest:
+"shadcn-ui@npm:latest":
   version: 0.4.1
   resolution: "shadcn-ui@npm:0.4.1"
   dependencies:

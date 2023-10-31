@@ -25,7 +25,7 @@ export const Footer: React.FC = () => {
             </div>
           </a>
 
-          <a
+          {/* <a
             target="_blank"
             rel="noopener noreferrer"
             href="https://opengeohub.medium.com/"
@@ -36,7 +36,7 @@ export const Footer: React.FC = () => {
             <div className={cn(CONTROL_BUTTON_STYLES.default, 'h-[28px] w-[28px]')}>
               <BiLogoMedium className={CONTROL_ICON_STYLES.default} />
             </div>
-          </a>
+          </a> */}
         </div>
         <div className="flex flex-1 justify-start space-x-14">
           <div className="flex items-center space-x-2">
