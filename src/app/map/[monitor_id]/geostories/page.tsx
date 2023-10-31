@@ -1,16 +1,11 @@
-import { notFound } from 'next/navigation';
+'use client';
 
-import type { Metadata, NextPage } from 'next';
+import type { NextPage } from 'next';
 
 import { useMonitor, useMonitorGeostories } from '@/hooks/monitors';
 
 import GeostoryCard from '@/components/geostories/card';
 import Loading from '@/components/loading';
-
-export const metadata: Metadata = {
-  title: 'Hub - Open Earth Monitor Cyberinfrastructure',
-  description: '...',
-};
 
 const GeostoriesPage: NextPage<{ params: { monitor_id: string } }> = ({ params }) => {
   const monitorId = params.monitor_id;
@@ -21,8 +16,6 @@ const GeostoriesPage: NextPage<{ params: { monitor_id: string } }> = ({ params }
     { enabled: !!monitorId }
   );
   const { color } = monitor ?? {};
-
-  if (!isError) return notFound();
 
   return (
     <div>

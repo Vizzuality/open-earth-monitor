@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   description: '...',
 };
 
-
 const Hub: NextPage = () => {
   return (
     <div className=" text-secondary-500">
