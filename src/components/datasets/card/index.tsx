@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback } from 'react';
 
 import { FiInfo } from 'react-icons/fi';
 import { HiOutlineExternalLink } from 'react-icons/hi';
@@ -8,14 +8,14 @@ import cn from '@/lib/classnames';
 
 import type { LayerParsed } from '@/types/layers';
 
-import { useURLayerParams, useURLParams } from '@/hooks/url-params';
-
 import TimeSeries from '@/components/timeseries';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
+import { useSyncLayersSettings } from '../sync-query';
+
 type DatasetCardProps = LayerParsed & {
   id: string;
-  active?: boolean;
+  active?: string;
   autoPlay?: boolean;
 };
 
@@ -27,59 +27,26 @@ const DatasetCard: FC<DatasetCardProps> = ({
   author,
   gs_style: legendStyles,
   range,
-  active = false,
   autoPlay = false,
 }) => {
-  const { updateSearchParam, removeSearchParam } = useURLParams();
-  const { layerId, layerOpacity, date } = useURLayerParams();
-  const [isActive, setIsActive] = useState<boolean>(active);
+  const [layers, setLayers] = useSyncLayersSettings();
+  const isActive = layers?.[0]?.id;
 
   /**
    * Handle click on the toggle button
    */
   const handleClick = useCallback(() => {
-    const nextIsActive = !isActive;
-    setIsActive(nextIsActive);
-
-    if (nextIsActive) {
-      updateSearchParam({
-        layers: [
+    return isActive !== id
+      ? setLayers((prevState) => [
           {
+            opacity: layers?.[0]?.opacity ?? 1,
+            date: layers?.[0]?.date ?? range?.[0]?.value,
+            ...prevState?.[0],
             id,
-            opacity: !layerOpacity && layerOpacity !== 0 ? 1 : layerOpacity,
-            date: date || range?.[0]?.value,
           },
-        ],
-      });
-    } else {
-      removeSearchParam('layers');
-    }
-  }, [date, id, isActive, layerOpacity, range, removeSearchParam, updateSearchParam]);
-
-  /**
-   * At mount, if layerId is in the URL, update the URL with the layerId
-   */
-  useEffect(() => {
-    if (active && isActive && layerId !== id) {
-      updateSearchParam({
-        layers: [
-          {
-            id,
-            opacity: !layerOpacity && layerOpacity !== 0 ? 1 : layerOpacity,
-            date: date || range?.[0]?.value,
-          },
-        ],
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  /**
-   * Update isActive state when layerId is not in the URL anymore
-   */
-  useEffect(() => {
-    setIsActive(layerId === id);
-  }, [layerId, id]);
+        ])
+      : setLayers(null);
+  }, [isActive, id, setLayers, layers, range]);
 
   return (
     <div className="space-y-6 bg-brand-300 p-6" data-testid={`dataset-item-${id}`}>
@@ -152,7 +119,9 @@ const DatasetCard: FC<DatasetCardProps> = ({
         </div>
       )}
 
-      {range && <TimeSeries range={range} layerId={id} autoPlay={autoPlay} isActive={isActive} />}
+      {range && (
+        <TimeSeries range={range} layerId={id} autoPlay={autoPlay} isActive={id === isActive} />
+      )}
 
       <button
         data-testid="dataset-layer-toggle-button"
@@ -160,7 +129,7 @@ const DatasetCard: FC<DatasetCardProps> = ({
         className={cn(
           'flex min-h-[38px] w-full items-center justify-center space-x-2 border-2 border-secondary-500 px-6 py-2 text-xs font-bold transition-colors hover:bg-secondary-500/20',
           {
-            'bg-secondary-500 text-brand-500 hover:text-secondary-500': isActive,
+            'bg-secondary-500 text-brand-500 hover:text-secondary-500': isActive === id,
           }
         )}
         onClick={handleClick}

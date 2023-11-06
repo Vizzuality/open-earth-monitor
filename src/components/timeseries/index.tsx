@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { HiPlay, HiPause } from 'react-icons/hi2';
-import { useInterval } from 'usehooks-ts';
+import { useInterval, useDebounce } from 'usehooks-ts';
 
 import cn from '@/lib/classnames';
 
 import type { LayerDateRange, LayerParsed } from '@/types/layers';
 
-import { useURLayerParams, useURLParams } from '@/hooks/url-params';
+import { useURLayerParams } from '@/hooks/url-params';
 
 import {
   Select,
@@ -18,6 +18,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { useSyncLayersSettings } from '../datasets/sync-query';
+
 const TIMEOUT_STEP_DURATION = 2500;
 
 const TimeSeries: FC<{
@@ -26,10 +28,22 @@ const TimeSeries: FC<{
   autoPlay?: boolean;
   isActive?: boolean;
 }> = ({ range, autoPlay = false, isActive = false }) => {
-  const { updateSearchParam } = useURLParams();
-  const { layerId, layerOpacity, date } = useURLayerParams();
-
+  const [layers, setLayers] = useSyncLayersSettings();
+  const layerId = layers?.[0]?.id;
+  const layerOpacity = layers?.[0]?.opacity;
+  const date = layers?.[0]?.date;
+  const opacity = !layerOpacity && layerOpacity !== 0 ? 1 : layerOpacity;
+  const debouncedOpacity = useDebounce<number>(opacity, 300);
   const [currentRange, setCurrentRange] = useState<{ value: string; label: string }>(range[0]);
+
+  useEffect(
+    () => {
+      void setLayers([{ id: layerId, opacity, date: currentRange?.value }]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [debouncedOpacity, currentRange?.value]
+  );
+
   const [isPlaying, setPlaying] = useState<boolean>(autoPlay);
 
   const handlePlay = useCallback(() => {
@@ -55,20 +69,20 @@ const TimeSeries: FC<{
   /**
    * Updating layers params when range changes
    */
-  useEffect(() => {
-    if (currentRange && isActive) {
-      updateSearchParam({
-        layers: [
-          {
-            id: layerId,
-            opacity: !layerOpacity && layerOpacity !== 0 ? 1 : layerOpacity,
-            date: currentRange?.value,
-          },
-        ],
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentRange]);
+  // useEffect(() => {
+  //   if (currentRange && isActive) {
+  //     updateSearchParam({
+  //       layers: [
+  //         {
+  //           id: layerId,
+  //           opacity: !layerOpacity && layerOpacity !== 0 ? 1 : layerOpacity,
+  //           date: currentRange?.value,
+  //         },
+  //       ],
+  //     });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [currentRange]);
 
   /**
    * At mounting set initial current range based on the url params

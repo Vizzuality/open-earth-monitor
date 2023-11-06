@@ -1,7 +1,8 @@
 import { cn } from '@/lib/classnames';
 
 import { useLayerParsedSource } from '@/hooks/layers';
-import { useURLayerParams } from '@/hooks/url-params';
+
+import { useSyncLayersSettings } from '@/components/datasets/sync-query';
 
 import OpacitySetting from './opacity';
 import RemoveLayer from './remove';
@@ -11,16 +12,19 @@ const LEGEND_BUTTON_STYLES =
   'text-center text-xs uppercase rounded font-medium grow px-2 h-[34px] py-1 tracking-wide text-white hover:bg-secondary-500 hover:text-brand-500 disabled:opacity-50 disabled:cursor-not-allowed';
 
 export const Legend = () => {
-  const { layerId } = useURLayerParams();
-  const { data } = useLayerParsedSource({ layer_id: layerId }, { enabled: !!layerId });
-  const { title } = data ?? {};
+  const [layers] = useSyncLayersSettings();
 
+  const { data } = useLayerParsedSource(
+    { layer_id: layers?.[0]?.id },
+    { enabled: !!layers?.length }
+  );
+  const { title } = data ?? {};
   return (
     <div
       className="absolute bottom-3 right-3 z-10 space-y-1 font-inter text-xs"
       data-testid="map-legend"
     >
-      {layerId && (
+      {!!layers?.length && (
         <div className="flex rounded-md border border-secondary-500 bg-brand-500">
           <button
             type="button"
@@ -34,7 +38,7 @@ export const Legend = () => {
           </button>
         </div>
       )}
-      {data && layerId && (
+      {data && !!layers?.length && (
         <div
           className="relative flex min-h-[34px] items-center justify-between space-x-4 rounded-sm border border-gray-600 bg-brand-500 px-4 py-3"
           data-testid="map-legend-item"
