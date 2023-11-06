@@ -11,7 +11,7 @@ import type { LayerParsed } from '@/types/layers';
 import TimeSeries from '@/components/timeseries';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-import { useSyncLayersSettings } from '../sync-query';
+import { useSyncLayersSettings } from '../../../hooks/sync-query';
 
 type DatasetCardProps = LayerParsed & {
   id: string;
@@ -27,7 +27,7 @@ const DatasetCard: FC<DatasetCardProps> = ({
   author,
   gs_style: legendStyles,
   range,
-  autoPlay = false,
+  autoPlay = true,
 }) => {
   const [layers, setLayers] = useSyncLayersSettings();
   const isActive = layers?.[0]?.id;
@@ -37,11 +37,10 @@ const DatasetCard: FC<DatasetCardProps> = ({
    */
   const handleClick = useCallback(() => {
     return isActive !== id
-      ? setLayers((prevState) => [
+      ? setLayers([
           {
             opacity: layers?.[0]?.opacity ?? 1,
-            date: layers?.[0]?.date ?? range?.[0]?.value,
-            ...prevState?.[0],
+            date: layers?.[0]?.date || range?.[0]?.value,
             id,
           },
         ])
@@ -132,7 +131,7 @@ const DatasetCard: FC<DatasetCardProps> = ({
             'bg-secondary-500 text-brand-500 hover:text-secondary-500': isActive === id,
           }
         )}
-        onClick={handleClick}
+        onClick={() => void handleClick()}
       >
         <span>{isActive ? 'Hide' : 'Show'} layer on the map</span>
         <LuLayers className="h-3 w-3 text-inherit" title="layer" />

@@ -8,3 +8,5 @@ type LayerSettings = {
 };
 
 export const useSyncLayersSettings = () => useQueryState('layers', parseAsJson<LayerSettings[]>());
+export const useSyncCompareLayersSettings = () =>
+  useQueryState('compareLayers', parseAsJson<LayerSettings[]>());

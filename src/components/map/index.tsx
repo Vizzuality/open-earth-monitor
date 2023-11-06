@@ -10,8 +10,7 @@ import { RLayerWMS, RMap, RLayerTile, RControl } from 'rlayers';
 import { RView } from 'rlayers/RMap';
 
 import { useLayerParsedSource } from '@/hooks/layers';
-
-import { useSyncLayersSettings } from '@/components/datasets/sync-query';
+import { useSyncLayersSettings, useSyncCompareLayersSettings } from '@/hooks/sync-query';
 
 import { DEFAULT_VIEWPORT } from './constants';
 // map controls
@@ -32,6 +31,10 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
   const date = layers?.[0]?.date;
   const [nextSearchParams, setNextSearchParams] = useState<string>(searchParams.toString());
   const [currentPathname, setCurrentPathname] = useState<string>(pathname);
+
+  const [compareLayers] = useSyncCompareLayersSettings();
+  const compareLayerId = compareLayers?.[0]?.id;
+  const compareDate = compareLayers?.[0]?.date;
 
   /**
    * Local viewport state
@@ -146,29 +149,31 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
           />
         )}
 
-        <RLayerWMS
-          properties={{ label: gs_name, opacity: layerOpacity, date, range }}
-          url={gs_base_wms}
-          params={{
-            FORMAT: 'image/png',
-            WIDTH: 256,
-            HEIGHT: 256,
-            SERVICE: 'WMS',
-            VERSION: '1.3.0',
-            REQUEST: 'GetMap',
-            TRANSPARENT: true,
-            LAYERS: gs_name,
-            DIM_DATE: '20130101_20131231', // change this date to the one you want to compare
-            CRS: 'EPSG:3857',
-            BBOX: 'bbox-epsg-3857',
-          }}
-        />
+        {!!compareLayerId && (
+          <RLayerWMS
+            properties={{ label: gs_name, opacity: layerOpacity, date, range }}
+            url={gs_base_wms}
+            params={{
+              FORMAT: 'image/png',
+              WIDTH: 256,
+              HEIGHT: 256,
+              SERVICE: 'WMS',
+              VERSION: '1.3.0',
+              REQUEST: 'GetMap',
+              TRANSPARENT: true,
+              LAYERS: gs_name,
+              DIM_DATE: compareDate || date,
+              CRS: 'EPSG:3857',
+              BBOX: 'bbox-epsg-3857',
+            }}
+          />
+        )}
 
         <Controls className="absolute bottom-3 left-[554px] z-50">
           <RControl.RZoom />
           <BookmarkControl />
           <ShareControl />
-          <SwipeControl />
+          {compareLayerId && <SwipeControl />}
         </Controls>
         <Legend />
       </RMap>

@@ -5,7 +5,7 @@ import { IoMdEye } from 'react-icons/io';
 
 import { cn } from '@/lib/classnames';
 
-import { useSyncLayersSettings } from '@/components/datasets/sync-query';
+import { useSyncLayersSettings } from '@/hooks/sync-query';
 
 export const LayerVisibility = () => {
   const [layers, setLayers] = useSyncLayersSettings();

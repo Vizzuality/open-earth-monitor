@@ -4,7 +4,8 @@ import { MdOutlineOpacity } from 'react-icons/md';
 
 import { cn } from '@/lib/classnames';
 
-import { useSyncLayersSettings } from '@/components/datasets/sync-query';
+import { useSyncLayersSettings } from '@/hooks/sync-query';
+
 import { Slider } from '@/components/slider';
 import { Popover, PopoverArrow, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
@@ -20,8 +21,10 @@ export const OpacitySetting: FC = () => {
     [isOpacityPopoverOpen]
   );
 
-  const handleChange = async (e: number[]) =>
-    await setLayers((prevState) => [{ ...prevState?.[0], opacity: e[0] }]);
+  const handleChange = useCallback(
+    (e: number[]) => void setLayers((prevState) => [{ ...prevState?.[0], opacity: e[0] }]),
+    [setLayers]
+  );
 
   return (
     <Popover onOpenChange={handleOpacityVisibility}>

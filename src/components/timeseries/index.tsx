@@ -8,8 +8,6 @@ import cn from '@/lib/classnames';
 
 import type { LayerDateRange, LayerParsed } from '@/types/layers';
 
-import { useURLayerParams } from '@/hooks/url-params';
-
 import {
   Select,
   SelectContent,
@@ -18,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { useSyncLayersSettings } from '../datasets/sync-query';
+import { useSyncLayersSettings } from '../../hooks/sync-query';
 
 const TIMEOUT_STEP_DURATION = 2500;
 
@@ -29,6 +27,8 @@ const TimeSeries: FC<{
   isActive?: boolean;
 }> = ({ range, autoPlay = false, isActive = false }) => {
   const [layers, setLayers] = useSyncLayersSettings();
+  const [compareLayers, setCompareLayers] = useSyncLayersSettings();
+  const isCompareActive = compareLayers?.[0]?.id;
   const layerId = layers?.[0]?.id;
   const layerOpacity = layers?.[0]?.opacity;
   const date = layers?.[0]?.date;
@@ -46,9 +46,7 @@ const TimeSeries: FC<{
 
   const [isPlaying, setPlaying] = useState<boolean>(autoPlay);
 
-  const handlePlay = useCallback(() => {
-    setPlaying(!isPlaying);
-  }, [isPlaying]);
+  const handlePlay = useCallback(() => {}, [isPlaying]);
 
   const handleSelect = useCallback(
     (value: string) => {
@@ -65,24 +63,6 @@ const TimeSeries: FC<{
     },
     isPlaying ? TIMEOUT_STEP_DURATION : null
   );
-
-  /**
-   * Updating layers params when range changes
-   */
-  // useEffect(() => {
-  //   if (currentRange && isActive) {
-  //     updateSearchParam({
-  //       layers: [
-  //         {
-  //           id: layerId,
-  //           opacity: !layerOpacity && layerOpacity !== 0 ? 1 : layerOpacity,
-  //           date: currentRange?.value,
-  //         },
-  //       ],
-  //     });
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [currentRange]);
 
   /**
    * At mounting set initial current range based on the url params
@@ -103,6 +83,19 @@ const TimeSeries: FC<{
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive]);
+
+  // Stop time series when compare is active
+  // useEffect(() => {
+  //   if (isCompareActive) {
+  //     setPlaying(false);
+  //   }
+  // }, [isCompareActive]);
+
+  // useEffect(() => {
+  //   if (isPlaying) {
+  //     setCompareLayers(null);
+  //   }
+  // }, [isPlaying, setCompareLayers]);
 
   return (
     <div className="space-y-4">

@@ -4,7 +4,7 @@ import { RxCross2 } from 'react-icons/rx';
 
 import { cn } from '@/lib/classnames';
 
-import { useSyncLayersSettings } from '@/components/datasets/sync-query';
+import { useSyncLayersSettings } from '@/hooks/sync-query';
 
 export const RemoveLayer: FC<{ className?: string }> = ({ className }) => {
   const [, setLayers] = useSyncLayersSettings();
