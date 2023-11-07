@@ -17,11 +17,7 @@ const DatasetsPage: NextPage<{ params: { monitor_id: string } }> = ({ params: { 
           {data.map((dataset, index) => {
             return (
               <li key={dataset.layer_id}>
-                <DatasetCard
-                  {...dataset}
-                  id={dataset.layer_id}
-                  active={index === 0 ? dataset.layer_id : ''}
-                />
+                <DatasetCard {...dataset} id={dataset.layer_id} active={index === 0} />
               </li>
             );
           })}

@@ -36,17 +36,17 @@ const MonitorsItem = ({ data }: { data: MonitorParsed }) => {
           key={id}
           href={{
             pathname: `/map/${id}/datasets`,
-            query: {
-              layers: JSON.stringify([
-                {
-                  id: defaultLayer?.layer_id,
-                  opacity: 1,
-                  ...(defaultRange && {
-                    date: defaultRange,
-                  }),
-                },
-              ]),
-            },
+            // query: {
+            //   layers: JSON.stringify([
+            //     {
+            //       id: defaultLayer?.layer_id,
+            //       opacity: 1,
+            //       ...(defaultRange && {
+            //         date: defaultRange,
+            //       }),
+            //     },
+            //   ]),
+            // },
           }}
           className={`flex items-center border-l-4 px-4 font-bold`}
           style={{ borderLeftColor: color }}
@@ -109,17 +109,17 @@ const MonitorsItem = ({ data }: { data: MonitorParsed }) => {
                   <Link
                     href={{
                       pathname: `/map/geostories/${geostoryId}`,
-                      query: {
-                        layers: JSON.stringify([
-                          {
-                            id: defaultLayer?.layer_id,
-                            opacity: 1,
-                            ...(defaultLayer?.range?.[0] && {
-                              date: defaultLayer?.range?.[0],
-                            }),
-                          },
-                        ]),
-                      },
+                      // query: {
+                      //   layers: JSON.stringify([
+                      //     {
+                      //       id: defaultLayer?.layer_id,
+                      //       opacity: 1,
+                      //       ...(defaultLayer?.range?.[0] && {
+                      //         date: defaultLayer?.range?.[0],
+                      //       }),
+                      //     },
+                      //   ]),
+                      // },
                     }}
                     className="block"
                   >

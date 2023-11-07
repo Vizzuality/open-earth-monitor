@@ -25,11 +25,11 @@ const TimeSeries: FC<{
   range: LayerParsed['range'];
   autoPlay?: boolean;
   isActive?: boolean;
-}> = ({ range, autoPlay = false, isActive = false }) => {
+}> = ({ range, autoPlay = false, isActive = false, layerId }) => {
   const [layers, setLayers] = useSyncLayersSettings();
   const [compareLayers, setCompareLayers] = useSyncLayersSettings();
   const isCompareActive = compareLayers?.[0]?.id;
-  const layerId = layers?.[0]?.id;
+  const compareDate = compareLayers?.[0]?.date;
   const layerOpacity = layers?.[0]?.opacity;
   const date = layers?.[0]?.date;
   const opacity = !layerOpacity && layerOpacity !== 0 ? 1 : layerOpacity;
@@ -39,9 +39,12 @@ const TimeSeries: FC<{
   useEffect(
     () => {
       void setLayers([{ id: layerId, opacity, date: currentRange?.value }]);
+      if (!!isCompareActive) {
+        void setCompareLayers([{ id: layerId, opacity, date: compareDate }]);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [debouncedOpacity, currentRange?.value]
+    [debouncedOpacity, opacity, currentRange?.value]
   );
 
   const [isPlaying, setPlaying] = useState<boolean>(autoPlay);
@@ -93,11 +96,11 @@ const TimeSeries: FC<{
   //   }
   // }, [isCompareActive]);
 
-  // useEffect(() => {
-  //   if (isPlaying) {
-  //     setCompareLayers(null);
-  //   }
-  // }, [isPlaying, setCompareLayers]);
+  useEffect(() => {
+    if (isPlaying) {
+      void setCompareLayers(null);
+    }
+  }, [isPlaying]);
 
   return (
     <div className="space-y-4">

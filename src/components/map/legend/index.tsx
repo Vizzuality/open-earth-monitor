@@ -1,7 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
 
-import { useRouter, usePathname } from 'next/navigation';
-
 import { cn } from '@/lib/classnames';
 
 import { useLayerParsedSource } from '@/hooks/layers';
@@ -31,51 +29,50 @@ export const Legend = () => {
   const [layers, setLayers] = useSyncLayersSettings();
   const [compareLayers, setCompareLayers] = useSyncCompareLayersSettings();
 
-  const { data } = useLayerParsedSource(
-    { layer_id: layers?.[0]?.id },
-    { enabled: !!layers?.length }
-  );
-  const { title, range } = data ?? {};
-
   const layerId = layers?.[0]?.id;
   const opacity = layers?.[0]?.opacity;
   const date = layers?.[0]?.date;
 
-  const defaultCompareDate = compareLayers?.[0]?.date || date;
+  const compareDate = compareLayers?.[0]?.date;
 
-  const [activeTab, setActiveTab] = useState<'layer-settings' | 'compare-layers'>('layer-settings');
+  const { data } = useLayerParsedSource({ layer_id: layerId }, { enabled: !!layers?.length });
+  const { title, range } = data ?? {};
+
+  const defaultCompareDate = compareDate || date;
+
+  const [activeTab, setActiveTab] = useState<'layer-settings' | 'compare-layers'>(
+    !!compareDate ? 'compare-layers' : 'layer-settings'
+  );
 
   const handleTabChange = (value: 'layer-settings' | 'compare-layers') => {
     setActiveTab(value);
   };
 
   const [baseDate, setBaseDate] = useState<string>(date);
-  const [compareDate, setCompareDate] = useState<string>(defaultCompareDate);
+  const [selectedCompareDate, setSelectedCompareDate] = useState<string>(defaultCompareDate);
 
   useEffect(() => {
     if (activeTab === 'compare-layers') {
-      setLayers([{ id: layerId, opacity, date: baseDate }]);
-      setCompareLayers([{ id: layerId, opacity, date: compareDate }]);
-    } else {
-      setLayers([{ id: layerId, opacity, date: baseDate }]);
-      setCompareLayers(null);
+      void setCompareLayers([{ id: layerId, opacity, date: selectedCompareDate }]);
     }
-  }, [baseDate, compareDate, layerId, activeTab, setLayers, setCompareLayers, opacity]);
+    if (activeTab === 'layer-settings') {
+      void setCompareLayers(null);
+    }
+    void setLayers([{ id: layerId, opacity, date: baseDate }]);
+  }, [baseDate, selectedCompareDate, layerId, activeTab, setLayers, setCompareLayers, opacity]);
 
   const baseDateLabel = useMemo(() => findLabel(baseDate, range), [baseDate, range]);
-  const CompareDateLabel = useMemo(() => findLabel(compareDate, range), [compareDate, range]);
+  const CompareDateLabel = useMemo(
+    () => findLabel(selectedCompareDate, range),
+    [selectedCompareDate, range]
+  );
 
   return (
     <div
       className="absolute bottom-3 right-3 z-10 space-y-1 font-inter text-xs"
       data-testid="map-legend"
     >
-      <Tabs
-        value={activeTab}
-        onValueChange={handleTabChange}
-        defaultValue="layer-settings"
-        className="w-[400px]"
-      >
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="w-[400px]">
         <TabsList className="border-box rounded border border-secondary-500">
           <TabsTrigger
             data-testid="map-legend-toggle-button"
@@ -88,7 +85,7 @@ export const Legend = () => {
             value="compare-layers"
             className={cn(LEGEND_BUTTON_STYLES)}
             data-testid="map-legend-compare-button"
-            disabled={!range || range.length === 0}
+            disabled={!range || range.length === 0 || !layerId}
           >
             Compare
           </TabsTrigger>
@@ -150,7 +147,7 @@ export const Legend = () => {
                 <DropdownMenuContent className="bg-brand-500">
                   {range?.map((d) => (
                     <DropdownMenuItem key={d.value}>
-                      <button type="button" onClick={() => setCompareDate(d.value)}>
+                      <button type="button" onClick={() => setSelectedCompareDate(d.value)}>
                         {d.label}
                       </button>
                     </DropdownMenuItem>

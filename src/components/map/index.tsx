@@ -25,16 +25,37 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [layers] = useSyncLayersSettings();
+  const [layers, setLayers] = useSyncLayersSettings();
   const layerId = layers?.[0]?.id;
   const layerOpacity = layers?.[0]?.opacity;
   const date = layers?.[0]?.date;
   const [nextSearchParams, setNextSearchParams] = useState<string>(searchParams.toString());
   const [currentPathname, setCurrentPathname] = useState<string>(pathname);
 
-  const [compareLayers] = useSyncCompareLayersSettings();
+  const [compareLayers, setCompareLayers] = useSyncCompareLayersSettings();
   const compareLayerId = compareLayers?.[0]?.id;
   const compareDate = compareLayers?.[0]?.date;
+
+  // activates map at first render
+  useEffect(() => {
+    if (!!layerId)
+      void setLayers([
+        {
+          opacity: layerOpacity ?? 1,
+          date: date || range?.[0]?.value,
+          id: layerId,
+        },
+      ]);
+
+    if (!!compareLayerId)
+      void setCompareLayers([
+        {
+          opacity: layerOpacity ?? 1,
+          date: compareDate || range?.[0]?.value,
+          id: compareLayerId,
+        },
+      ]);
+  }, []);
 
   /**
    * Local viewport state
@@ -106,7 +127,7 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
     } else if (!nextSearchParams || nextSearchParams === '') {
       cleanUpLayers();
     } else {
-      router.replace(`${pathname}?${nextSearchParams.toString()}`);
+      // router.replace(`${pathname}?${nextSearchParams.toString()}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, nextSearchParams, router, currentPathname]);

@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 
 import { FiInfo } from 'react-icons/fi';
 import { HiOutlineExternalLink } from 'react-icons/hi';
@@ -11,11 +11,11 @@ import type { LayerParsed } from '@/types/layers';
 import TimeSeries from '@/components/timeseries';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-import { useSyncLayersSettings } from '../../../hooks/sync-query';
+import { useSyncCompareLayersSettings, useSyncLayersSettings } from '../../../hooks/sync-query';
 
 type DatasetCardProps = LayerParsed & {
   id: string;
-  active?: string;
+  active?: boolean;
   autoPlay?: boolean;
 };
 
@@ -28,24 +28,60 @@ const DatasetCard: FC<DatasetCardProps> = ({
   gs_style: legendStyles,
   range,
   autoPlay = true,
+  active,
 }) => {
   const [layers, setLayers] = useSyncLayersSettings();
-  const isActive = layers?.[0]?.id;
+  const layerId = layers?.[0]?.id;
+  const layerOpacity = layers?.[0]?.opacity;
+  const layerDate = layers?.[0]?.date;
+  const [isActive, setIsActive] = useState<boolean>(active);
+  const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
+
+  // activates first layer at first render
+  useEffect(() => {
+    if (active && isFirstRender)
+      void setLayers([
+        {
+          opacity: layerOpacity ?? 1,
+          date: layerDate || range?.[0]?.value,
+          id: layerId || id,
+        },
+      ]);
+  }, []);
+
+  /**
+   * At mount, if layerId is in the URL, update the URL with the layerId
+   */
+  useEffect(() => {
+    if (active && isActive && layerId !== id) {
+      void setLayers([
+        {
+          id,
+          opacity: !layerOpacity && layerOpacity !== 0 ? 1 : layerOpacity,
+          date: layerDate || range?.[0]?.value,
+        },
+      ]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (isActive === id)
+      void setLayers([
+        {
+          opacity: layerOpacity ?? 1,
+          date: layerDate || range?.[0]?.value,
+          id: active,
+        },
+      ]);
+  }, []);
 
   /**
    * Handle click on the toggle button
    */
   const handleClick = useCallback(() => {
-    return isActive !== id
-      ? setLayers([
-          {
-            opacity: layers?.[0]?.opacity ?? 1,
-            date: layers?.[0]?.date || range?.[0]?.value,
-            id,
-          },
-        ])
-      : setLayers(null);
-  }, [isActive, id, setLayers, layers, range]);
+    setIsActive(isActive === id);
+  }, [id, setIsActive]);
 
   return (
     <div className="space-y-6 bg-brand-300 p-6" data-testid={`dataset-item-${id}`}>
