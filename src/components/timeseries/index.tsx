@@ -46,7 +46,9 @@ const TimeSeries: FC<{
 
   const [isPlaying, setPlaying] = useState<boolean>(autoPlay);
 
-  const handlePlay = useCallback(() => {}, [isPlaying]);
+  const handlePlay = useCallback(() => {
+    setPlaying(!isPlaying);
+  }, [isPlaying]);
 
   const handleSelect = useCallback(
     (value: string) => {

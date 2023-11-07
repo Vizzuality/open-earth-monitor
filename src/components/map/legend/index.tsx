@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -22,7 +22,10 @@ import LayerVisibility from './visibility';
 const LEGEND_BUTTON_STYLES =
   'bg-brand-500 flex-1 text-center text-xs uppercase rounded font-medium grow px-2 h-[34px] py-1 tracking-wide text-white hover:bg-secondary-500 hover:text-brand-500 disabled:opacity-50 disabled:cursor-not-allowed';
 
-const findLabel = (value, range) => range?.find((d) => d.value === value)?.label;
+const findLabel = (value: string, range: { label: string; value: string | number }[]) =>
+  range?.find((d: { label: string; value: string }) => d.value === value)?.label satisfies
+    | string
+    | number;
 
 export const Legend = () => {
   const [layers, setLayers] = useSyncLayersSettings();
@@ -38,7 +41,7 @@ export const Legend = () => {
   const opacity = layers?.[0]?.opacity;
   const date = layers?.[0]?.date;
 
-  const defaultCompareDate = compareLayers?.[0]?.date;
+  const defaultCompareDate = compareLayers?.[0]?.date || date;
 
   const [activeTab, setActiveTab] = useState<'layer-settings' | 'compare-layers'>('layer-settings');
 
@@ -59,8 +62,8 @@ export const Legend = () => {
     }
   }, [baseDate, compareDate, layerId, activeTab, setLayers, setCompareLayers, opacity]);
 
-  const baseDateLabel = findLabel(baseDate, range);
-  const CompareDateLabel = findLabel(compareDate, range);
+  const baseDateLabel = useMemo(() => findLabel(baseDate, range), [baseDate, range]);
+  const CompareDateLabel = useMemo(() => findLabel(compareDate, range), [compareDate, range]);
 
   return (
     <div
@@ -73,7 +76,7 @@ export const Legend = () => {
         defaultValue="layer-settings"
         className="w-[400px]"
       >
-        <TabsList>
+        <TabsList className="border-box rounded border border-secondary-500">
           <TabsTrigger
             data-testid="map-legend-toggle-button"
             value="layer-settings"
