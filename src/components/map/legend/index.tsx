@@ -61,7 +61,7 @@ export const Legend = () => {
       setCompareLayers(null);
     }
     setLayers([{ id: defaultId, opacity, date: date || range?.[0]?.value }]);
-  }, [selectedCompareDate, defaultId, activeTab, setLayers, setCompareLayers, opacity]);
+  }, [selectedCompareDate, defaultId, activeTab, setLayers, setCompareLayers, opacity, date]);
 
   useEffect(() => {
     if (activeTab === 'compare-layers') {

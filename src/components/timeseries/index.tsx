@@ -38,6 +38,7 @@ const TimeSeries: FC<{
 
   useEffect(
     () => {
+      console.log('entra porque cambia current range', currentRange);
       setLayers([{ id: layerId, opacity, date: currentRange?.value }]);
       if (!!isCompareActive) {
         setCompareLayers([{ id: layerId, opacity, date: compareDate }]);
