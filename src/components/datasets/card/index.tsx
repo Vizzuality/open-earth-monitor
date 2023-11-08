@@ -43,7 +43,7 @@ const DatasetCard: FC<DatasetCardProps> = ({
       setLayers([
         {
           opacity: layerOpacity ?? 1,
-          date: layerDate || range?.[0]?.value,
+          date: layerDate ?? range?.[0]?.value,
           id: layerId || id,
         },
       ]);
@@ -58,7 +58,7 @@ const DatasetCard: FC<DatasetCardProps> = ({
         {
           id,
           opacity: !layerOpacity && layerOpacity !== 0 ? 1 : layerOpacity,
-          date: layerDate || range?.[0]?.value,
+          date: layerDate ?? range?.[0]?.value,
         },
       ]);
     }
@@ -70,7 +70,7 @@ const DatasetCard: FC<DatasetCardProps> = ({
       setLayers([
         {
           opacity: layerOpacity ?? 1,
-          date: layerDate || range?.[0]?.value,
+          date: layerDate ?? range?.[0]?.value,
           id,
         },
       ]);

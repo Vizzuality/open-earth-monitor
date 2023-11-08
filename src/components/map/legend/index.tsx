@@ -38,7 +38,8 @@ export const Legend = () => {
   const { data } = useLayerParsedSource({ layer_id: layerId }, { enabled: !!layers?.length });
   const { title, range } = data ?? {};
 
-  const defaultCompareDate = compareDate || date;
+  const defaultBaseDate = date ?? range?.[0]?.value;
+  const defaultCompareDate = compareDate ?? date;
 
   const [activeTab, setActiveTab] = useState<'layer-settings' | 'compare-layers'>(
     !!compareDate ? 'compare-layers' : 'layer-settings'
@@ -48,7 +49,7 @@ export const Legend = () => {
     setActiveTab(value);
   };
 
-  const [baseDate, setBaseDate] = useState<string>(date);
+  const [baseDate, setBaseDate] = useState<string>(defaultBaseDate);
   const [selectedCompareDate, setSelectedCompareDate] = useState<string>(defaultCompareDate);
 
   useEffect(() => {

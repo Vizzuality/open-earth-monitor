@@ -42,7 +42,7 @@ const Map: FC<CustomMapProps> = ({ initialViewState = DEFAULT_VIEWPORT }) => {
       setLayers([
         {
           opacity: layerOpacity ?? 1,
-          date: date || range?.[0]?.value,
+          date: date ?? range?.[0]?.value,
           id: layerId,
         },
       ]);
