@@ -63,7 +63,7 @@ const TimeSeries: FC<{
 
   useEffect(
     () => {
-      if (isActive === layerId && !isFirstRender) {
+      if (isActive && layerId && !isFirstRender) {
         setLayers([{ id: layerId, opacity, date: currentRange?.value }]);
         if (!!isCompareActive) {
           setCompareLayers([{ id: layerId, opacity, date: compareDate }]);

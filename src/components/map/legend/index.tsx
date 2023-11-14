@@ -33,13 +33,12 @@ export const Legend = () => {
   const layerId = layers?.[0]?.id;
   const opacity = layers?.[0]?.opacity;
 
-  const compareId = compareLayers?.[0]?.id;
   const compareDate = compareLayers?.[0]?.date;
 
   const { data } = useLayerParsedSource({ layer_id: layerId }, { enabled: !!layers?.length });
   const { title, range } = data ?? {};
 
-  const defaultId = layerId ?? data?.id;
+  const defaultId = layerId ?? data?.layer_id;
   const defaultBaseDate = layers?.[0]?.date || range?.[0]?.value;
   const defaultCompareDate = compareDate ?? defaultBaseDate;
 
@@ -56,17 +55,17 @@ export const Legend = () => {
 
   useEffect(() => {
     if (activeTab === 'compare-layers') {
-      setLayers([{ id: defaultId, opacity, date: selectedBaseDate }]);
-      setCompareLayers([{ id: defaultId, opacity, date: selectedCompareDate }]);
+      void setLayers([{ id: defaultId, opacity, date: selectedBaseDate }]);
+      void setCompareLayers([{ id: defaultId, opacity, date: selectedCompareDate }]);
     }
   }, [selectedBaseDate, selectedCompareDate, activeTab]);
 
   useEffect(() => {
     if (activeTab === 'layer-settings' && layers?.[0]?.id) {
-      setLayers([{ id: defaultId, opacity, date: selectedBaseDate }]);
-      setCompareLayers(null);
+      void setLayers([{ id: defaultId, opacity, date: selectedBaseDate }]);
+      void setCompareLayers(null);
     }
-  }, [selectedBaseDate]);
+  }, [selectedBaseDate, activeTab]);
 
   const baseDateLabel = findLabel(layers?.[0]?.date, range);
   const CompareDateLabel = findLabel(compareLayers?.[0]?.date, range);
