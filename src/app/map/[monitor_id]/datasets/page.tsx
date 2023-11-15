@@ -15,11 +15,13 @@ const DatasetsPage: NextPage<{ params: { monitor_id: string } }> = ({ params: { 
       {isLoading && <Loading />}
       {isFetched && !isError && (
         <ul className="space-y-6" data-testid="datasets-list">
-          {data.map((dataset, index) => (
-            <li key={dataset.layer_id}>
-              <DatasetCard {...dataset} id={dataset.layer_id} active={index === 0} />
-            </li>
-          ))}
+          {data.map((dataset, index) => {
+            return (
+              <li key={dataset.layer_id}>
+                <DatasetCard {...dataset} id={dataset.layer_id} defaultActive={index === 0} />
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

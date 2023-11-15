@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 import Link from 'next/link';
 
@@ -10,12 +10,13 @@ import { cn } from '@/lib/classnames';
 import { MonitorParsed } from '@/types/monitors';
 
 import { TableCell } from '@/components/ui/table';
-
 const MonitorsItem = ({ data }: { data: MonitorParsed }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const controls = useAnimationControls();
-  const { id, title, geostories, color, colorOpacity } = data ?? {};
+  const { id, title, geostories, color, colorOpacity } = (data ?? {}) as MonitorParsed;
   const geostoriesLength = geostories.length;
+  const defaultLayer = useMemo(() => !!geostories && geostories?.[0]?.layers?.[0], [geostories]);
+  const defaultRange = useMemo(() => !!defaultLayer && defaultLayer?.range?.[0], [defaultLayer]);
 
   const handleVisibility = async () => {
     setIsExpanded(!isExpanded);
@@ -54,7 +55,7 @@ const MonitorsItem = ({ data }: { data: MonitorParsed }) => {
           data-testid="geostories-button"
           type="button"
           className="flex items-center space-x-4"
-          onClick={() => void handleVisibility()}
+          onClick={() => handleVisibility()}
         >
           <HiOutlineChevronUp
             className={cn({

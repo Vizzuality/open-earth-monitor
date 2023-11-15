@@ -4,14 +4,14 @@ import { RxCross2 } from 'react-icons/rx';
 
 import { cn } from '@/lib/classnames';
 
-import { useURLParams } from '@/hooks/url-params';
+import { useSyncLayersSettings } from '@/hooks/sync-query';
 
 export const RemoveLayer: FC<{ className?: string }> = ({ className }) => {
-  const { removeSearchParam } = useURLParams();
+  const [, setLayers] = useSyncLayersSettings();
 
-  const onRemoveLayer = useCallback(() => {
-    removeSearchParam('layers');
-  }, [removeSearchParam]);
+  const handleRemoveLayer = useCallback(() => {
+    void setLayers(null);
+  }, [setLayers]);
 
   return (
     <button
@@ -21,7 +21,7 @@ export const RemoveLayer: FC<{ className?: string }> = ({ className }) => {
         'flex cursor-pointer items-center justify-center': true,
         [className]: !!className,
       })}
-      onClick={onRemoveLayer}
+      onClick={handleRemoveLayer}
       aria-label="Toggle layer visibility"
     >
       <RxCross2 className="h-4 w-4 text-gray-600 hover:text-secondary-500" />
