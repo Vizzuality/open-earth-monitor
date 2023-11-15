@@ -3,7 +3,7 @@
 import { forwardRef, ElementRef, ComponentPropsWithoutRef } from 'react';
 
 import * as SelectPrimitive from '@radix-ui/react-select';
-import { HiChevronDown } from 'react-icons/hi2';
+import { HiChevronDown } from 'react-icons/hi';
 
 import { cn } from 'lib/classnames';
 
@@ -13,11 +13,11 @@ const SelectGroup = SelectPrimitive.Group;
 
 const SelectValue = SelectPrimitive.Value;
 
-const SelectTrigger = forwardRef<
-  ElementRef<typeof SelectPrimitive.Trigger>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+const SelectIcon = forwardRef<
+  ElementRef<typeof SelectPrimitive.Icon>,
+  ComponentPropsWithoutRef<typeof SelectPrimitive.Icon>
 >(({ className, children, ...props }, ref) => (
-  <SelectPrimitive.Trigger
+  <SelectPrimitive.Icon
     ref={ref}
     className={cn(
       'flex h-9 w-full items-center justify-between bg-transparent text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
@@ -26,9 +26,27 @@ const SelectTrigger = forwardRef<
     {...props}
   >
     {children}
-    <SelectPrimitive.Icon asChild>
-      <HiChevronDown className="[side=top]:rotate-90 h-4 w-4 data-[state=open]:rotate-180" />
-    </SelectPrimitive.Icon>
+  </SelectPrimitive.Icon>
+));
+
+SelectIcon.displayName = SelectPrimitive.Icon.displayName;
+
+const SelectTrigger = forwardRef<
+  ElementRef<typeof SelectPrimitive.Trigger>,
+  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Trigger
+    ref={ref}
+    className={cn(
+      'flex h-9 w-full items-center justify-between space-x-2 bg-transparent text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+      className
+    )}
+    {...props}
+  >
+    {children}
+    <SelectIcon>
+      <HiChevronDown className="h-5 w-5" />
+    </SelectIcon>
   </SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
@@ -110,6 +128,7 @@ export {
   SelectGroup,
   SelectValue,
   SelectTrigger,
+  SelectIcon,
   SelectContent,
   SelectLabel,
   SelectItem,

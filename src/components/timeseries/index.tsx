@@ -133,7 +133,7 @@ const TimeSeries: FC<{
   }, [date]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 border-t-[0.5px] border-secondary-900 pt-2.5">
       <div className="flex justify-between">
         <div className="flex items-center space-x-2">
           <HiCalendarDays className="h-10 w-10" />
@@ -142,7 +142,7 @@ const TimeSeries: FC<{
             <SelectTrigger className="text-xs font-semibold underline">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="w-fit max-w-fit" alignOffset={-10} sideOffset={0}>
               {range.map((r: LayerDateRange) => (
                 <SelectItem key={r.value} value={r.value}>
                   {r.label}
